@@ -22,8 +22,8 @@ def connect_db() :
 	rv.row_factory = sqlite3.Row
 	return rv
 
-if __name__ == '__main__':
-	app.run()
+	if __name__ == '__main__':
+		app.run()
 
 def get_db():
 	"""Opens a new database connection if there is none yet for the current application context.
