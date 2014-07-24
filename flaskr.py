@@ -75,14 +75,13 @@ def login():
 		for info in users_list:
 			if info['email'] == user_id:
 				if info['password'] == user_ps:
-					return True
+					return info
 		return False
 	
 	def check_list(users_list, user_id):
 		for info in users_list:
 			if info['email'] == user_id:
-				print info['email']
-				print user_id
+
 				return True
 		return False
 	
@@ -90,19 +89,30 @@ def login():
 		if os.path.isfile('users.txt') == True:
 			fr = open("users.txt", 'r')
 			data = fr.read()
-			print data
+		
 			users = json.loads(data)
-			print users
-			print request.form['username']
+	
+			
 			if check_list(users, request.form['username']) == False:
 				error = "Invalid email"
 			elif check_list(users, request.form['username']) == True:
-				if check_id_password(users, request.form['username'], request.form['password'])== False:
+				info = check_id_password(users, request.form['username'], request.form['password'])
+				if info == False:
 					error = "Invalid password"
 				else :
-					session['logged_in'] = True
-					flash('You were logged in')
-					return redirect(url_for('show_entries'))
+					if info['admin'] == True:
+						session['admin'] = True
+						session['logged_in'] = True
+						session['email'] = request.form['username']
+						flash('You were logged in')
+						return redirect(url_for('show_entries'))
+					else:
+						fr.close()
+						session['logged_in'] = True
+						session['email'] = request.form['username']
+						flash('You were logged in')
+						return redirect(url_for('show_entries'))
+
 		else :
 			error = "Invalid Email. Join"
 
@@ -121,20 +131,26 @@ def logout():
 	session.pop('logged_in', None)
 	flash('You were logged out')
 	return redirect(url_for('show_entries'))
+
+@app.route('/user_page')
+def user_page():
+	if os.path.isfile('users.txt') == True:
+		fr = open("users.txt", 'r')
+		data = fr.read()
+		users = json.loads(data)
+	return render_template('user_page.html',result = users)
+
 	
 
 @app.route('/signup', methods=['GET','POST'])
-
 def signup():
 	message = None
 
-	# def check_id_password(users_list, user_id, user_ps):
-	# 	for info in users_list:
-	# 		if info['email'] == user_id:
-	# 			if info['password'] == user_ps:
-	# 				return True
-	# 	return False
-	
+	if 'admin' in request.form:
+		admin_temp = True
+	else :
+		admin_temp = False	
+
 	def check_list(users_list, user_id):
 		for info in users_list:
 			if info['email'] == user_id:
@@ -149,7 +165,7 @@ def signup():
 		elif request.form['password'] == "":
 			message = "Password is empty"
 		elif request.form['password'] != "":
-			if bool(re.search(".{8,20}", request.form['password'])) == False:
+			if bool(re.search("^.{8,20}$", request.form['password'])) == False:
 				message = "Password is wrong"
 			elif bool(re.search("[A-Z]+", request.form['password'])) == False:
 				message = "Password is wrong"
@@ -176,7 +192,8 @@ def signup():
 						fw = open("users.txt", 'w')
 						info = {
 						'email' : request.form['email'],
-						'password' : request.form['password']
+						'password' : request.form['password'],
+						'admin' : admin_temp
 						}
 						users.append(info)
 						fw.write(json.dumps(users))
@@ -186,7 +203,8 @@ def signup():
 					f = open("users.txt", 'w')
 					info = {
 						'email' : request.form['email'],
-						'password' : request.form['password']
+						'password' : request.form['password'],
+						'admin' : admin_temp
 						}
 					f.write(json.dumps([info]))
 					f.close()
