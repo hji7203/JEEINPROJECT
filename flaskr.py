@@ -1,6 +1,8 @@
 import os
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
+import re
+import json
 
 #create our little application
 app = Flask(__name__)
@@ -68,15 +70,50 @@ def add_entry():
 @app.route('/login', methods=['GET','POST'])
 def login():
 	error = None
+	
+	def check_id_password(users_list, user_id, user_ps):
+		for info in users_list:
+			if info['email'] == user_id:
+				if info['password'] == user_ps:
+					return True
+		return False
+	
+	def check_list(users_list, user_id):
+		for info in users_list:
+			if info['email'] == user_id:
+				print info['email']
+				print user_id
+				return True
+		return False
+	
 	if request.method == 'POST':
-		if request.form['username'] != app.config['USERNAME']:
-			error = 'Invalid username'
-		elif request.form['password'] != app.config['PASSWORD']:
-			error = 'Invalid password'
-		else:
-			session['logged_in'] = True
-			flash('You were logged in')
-			return redirect(url_for('show_entries'))
+		if os.path.isfile('users.txt') == True:
+			fr = open("users.txt", 'r')
+			data = fr.read()
+			print data
+			users = json.loads(data)
+			print users
+			print request.form['username']
+			if check_list(users, request.form['username']) == False:
+				error = "Invalid email"
+			elif check_list(users, request.form['username']) == True:
+				if check_id_password(users, request.form['username'], request.form['password'])== False:
+					error = "Invalid password"
+				else :
+					session['logged_in'] = True
+					flash('You were logged in')
+					return redirect(url_for('show_entries'))
+		else :
+			error = "Invalid Email. Join"
+
+		#if request.form['username'] != app.config['USERNAME']:
+		# 	error = 'Invalid username'
+		# elif request.form['password'] != app.config['PASSWORD']:
+		# 	error = 'Invalid password'
+		# else:
+		# 	session['logged_in'] = True
+		# 	flash('You were logged in')
+		# 	return redirect(url_for('show_entries'))
 	return render_template('login.html', error=error)
 
 @app.route('/logout')
@@ -86,9 +123,79 @@ def logout():
 	return redirect(url_for('show_entries'))
 	
 
+@app.route('/signup', methods=['GET','POST'])
+
+def signup():
+	message = None
+
+	# def check_id_password(users_list, user_id, user_ps):
+	# 	for info in users_list:
+	# 		if info['email'] == user_id:
+	# 			if info['password'] == user_ps:
+	# 				return True
+	# 	return False
+	
+	def check_list(users_list, user_id):
+		for info in users_list:
+			if info['email'] == user_id:
+				return True
+		return False
+
+	if request.method == 'POST':
+		if request.form['email'] == "":
+			message = "Email is empty"
+		elif bool(re.search("[\w_]+@\w+(\.com|\.net|\.ac\.kr)", request.form['email']))== False:
+			message = "Email form is wrong"
+		elif request.form['password'] == "":
+			message = "Password is empty"
+		elif request.form['password'] != "":
+			if bool(re.search(".{8,20}", request.form['password'])) == False:
+				message = "Password is wrong"
+			elif bool(re.search("[A-Z]+", request.form['password'])) == False:
+				message = "Password is wrong"
+			elif bool(re.search("[a-z]+", request.form['password'])) == False:
+				message = "Password is wrong"
+			elif bool(re.search("[0-9]+", request.form['password'])) == False:
+				message = "Password is wrong"
+			elif bool(re.search("\W+", request.form['password'])) == False:
+				message = "Password is wrong"
+
+			elif request.form['password_check'] != request.form['password']:
+				message = "Password check again"
+
+			else:
+				if os.path.isfile('users.txt') == True:
+					fr = open("users.txt", 'r')
+					data = fr.read()
+					users = json.loads(data)
+					if check_list(users, request.form['email']) == True:
+						fr.close()
+						message = "This e-mail is already used"
+					else:
+						fr.close()
+						fw = open("users.txt", 'w')
+						info = {
+						'email' : request.form['email'],
+						'password' : request.form['password']
+						}
+						users.append(info)
+						fw.write(json.dumps(users))
+						fw.close()
+						message = "Sign up successful"
+				else:
+					f = open("users.txt", 'w')
+					info = {
+						'email' : request.form['email'],
+						'password' : request.form['password']
+						}
+					f.write(json.dumps([info]))
+					f.close()
+
+	return render_template('signup.html', message = message)
+
+
 if __name__ == '__main__':
 	init_db()
 	app.run()
-
 
 
