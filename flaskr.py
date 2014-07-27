@@ -140,6 +140,26 @@ def user_page():
 		users = json.loads(data)
 	return render_template('user_page.html',result = users)
 
+@app.route('/email_check', methods=['GET','POST'])
+def email_check():
+	email = request.form['email']
+	result = {}
+	fr = open("users.txt", 'r')
+	data = fr.read()
+	users = json.loads(data)
+	fr.close()
+	if check_list(users, request.form['email']) == True:
+		result['message'] = "used"
+		
+	else :
+		result['message']= "new"
+	return json.dumps(result)
+
+def check_list(users_list, user_id):
+	for info in users_list:
+		if info['email'] == user_id:
+			return True
+	return False
 	
 
 @app.route('/signup', methods=['GET','POST'])

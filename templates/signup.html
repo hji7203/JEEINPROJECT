@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
+<script type='text/javascript' src="{{url_for('static', filename = 'js/jquery-1.11.1.min.js')}}"></script>
+<script src= "{{url_for('static', filename='js/ajax_flaskr.js')}}" type='text/javascript'></script>
 <h2>Login</h2>
 {% if message %}<p class=erroe><strong>Message:</strong> {{ message }}{% endif %}
 <form action="{{ url_for('signup') }}" method=post>
 	<dl>
 		<dt>Email:</dt>
-		<dd><input type=text name="email" id = "email"><span id = "email_span">Invalid email format</span></dd>
+		<dd><input type=text name="email" id = "email"><span id = "email_span">Invalid email format</span>
+			<br><span id ="email_check">This email is already used.</span></dd>
 		<dt>Password:</dt>
 		<dd><input type=password name="password" id = "password"><span id = "password_span">Invalid password format</span></dd>
 		<dt>Password Check:</dt>
@@ -13,7 +16,6 @@
 		<dt>Check admin:</dt>
 		<dd><input type= checkbox name ="admin"></dd>
 		<dd><input type=submit value="Sign up"></dd>
-		<script type='text/javascript' src="{{url_for('static', filename = 'js/jquery-1.11.1.min.js')}}"></script>
 		<script type="text/javascript">
 		$(document).ready(function(){
 			$("#email").change(function(){
