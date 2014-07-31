@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Chatting</title>
+		<link href='http://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
+		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src = "{{url_for('static', filename= 'js/ajax.js')}}"></script>
+
+	</head>
+	<body>
+		<form action ="{{url_for('tweet')}}" method= "post">
+			<h2>Twitter</h2>
+			<input type ="text" name="tweet_box" id="tweet_box"/>
+			<input type="button" value = "submit" id = "submit"/>
+			<div id = 'table_here'>
+			</div>
+		</body>
+		</html>
+	</body>
+	</html>

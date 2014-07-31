@@ -1,0 +1,1 @@
+[{"admin": true, "password": "Hyun6401!", "email": "hji7203@naver.com"}]

@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block body %}
+<script type='text/javascript' src="{{url_for('static', filename = 'js/jquery-1.11.1.min.js')}}"></script>
+<script src= "{{url_for('static', filename='js/ajax_flaskr.js')}}" type='text/javascript'></script>
+<h2>Login</h2>
+{% if message %}<p class=erroe><strong>Message:</strong> {{ message }}{% endif %}
+<form action="{{ url_for('signup') }}" method=post>
+	<dl>
+		<dt>Email:</dt>
+		<dd><input type=text name="email" id = "email"><span id = "email_span">Invalid email format</span>
+			<br><span id ="email_check">This email is already used.</span></dd>
+		<dt>Password:</dt>
+		<dd><input type=password name="password" id = "password"><span id = "password_span">Invalid password format</span></dd>
+		<dt>Password Check:</dt>
+		<dd><input type=password name="password_check" id = "password_check"><span id = "password_c_span">Password check is different from password</span></dd>
+		<dt>Check admin:</dt>
+		<dd><input type= checkbox name ="admin"></dd>
+		<dd><input type=submit value="Sign up"></dd>
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$("#email").change(function(){
+				if (!$("#email").val().match(/[\w_]+@\w+(\.com|\.net|\.ac\.kr)/)){
+					$("#email").css("background-color","#ff4343");
+					$("#email_span").show();
+				}
+				else {
+					$("#email").css("background-color","#ffffff");
+					$("#email_span").hide();
+				}
+			});
+
+			$("#password").change(function(){
+				if ((!$("#password").val().match(/^.{8,20}$/)) || (!$("#password").val().match(/[A-Z]+/)) || (!$("#password").val().match(/[a-z]+/)) || (!$("#password").val().match(/[0-9]+/)) || (!$("#password").val().match(/\W+/))){
+						$("#password").css("background-color","#ff4343");
+						$("#password_span").show();
+					}
+					else {
+						$("#password").css("background-color","#ffffff");
+						$("#password_span").hide();
+					}
+				});
+
+			$("#password_check ").change(function(){
+				if (!($("#password_check").val() == $("#password").val())){
+					$("#password_check").css("background-color","#ff4343");
+					$("#password_c_span").show();
+				}
+				else {
+					$("#email").css("background-color","#ffffff");
+					$("#password_c_span").hide();
+				}
+			});
+
+		});
+		</script>
+	</dl>
+</form>
+{% endblock %}
