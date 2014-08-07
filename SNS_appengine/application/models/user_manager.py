@@ -17,6 +17,10 @@ def add_user(data):
 	db.session.commit()
 	return user
 
+def get_user(email):
+	user = User.query.filter(User.email == email).all()
+	return user
+
 def login_check(email, password):
 	return User.query.filter(User.email == email,
 		User.password == db.func.md5(password)).count() != 0
