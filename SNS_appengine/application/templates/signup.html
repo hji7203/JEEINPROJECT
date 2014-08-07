@@ -2,22 +2,20 @@
 {% block body %}
 <div class="out_layer">
 <h2>Sign up</h2>
-<!-- <form action="{{ url_for('signup') }}"> -->
+<form action="{{ url_for('signup') }}" method = "post" > 
 	<dl>
 		<dt>Email:</dt>
 		<dd><input type="text" name="email" id = "email"></dd>
 		<dt>Password:</dt>
 		<dd><input type="password" name="password" id = "password"></dd>
-		<dt>Password Check:</dt>
-		<dd><input type= "text" name ="password_check"></dd>
 		<dt>Name:</dt>
-		<dd><input type= "text" name ="userName"></dd>
+		<dd><input type= "text" name ="username"></dd>
 		<dt>Gender:</dt>
-		<dd><input type= "checkbox" name ="M">M<input type= checkbox name ="F">F</dd>
+		<dd><input type= "radio" name ="gender" value = "M">M<input type= "radio" name ="gender" value ="F">F</dd>
 		<dt>Mobile:</dt>
 		<dd><input type= "text" name ="mobile"></dd>
 		<dt>Birthday:</dt>
-		<dd><input type="date" id="birthday" value="2014-02-09"name= "birthday"></dd>
+		<dd><input type="date" id="birthday" name= "birthday"></dd>
 		<script>
 		function myFunction() {
 			var x = document.getElementById("birthday").value;
@@ -28,5 +26,5 @@
 		<dd><input type="reset" value="Reset"></dd>
 	</dl>
 </div>
-<!-- </form> -->
+</form>
 {% endblock %}

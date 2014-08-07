@@ -31,11 +31,16 @@
             <span class="byline">Pain Forever(feat.coding)</span></div>
           <nav id="nav" class="mobileUI-site-nav">
             <ul>
+              {% if not session.logged_in %}
               <li class="current_page_item"><a href="{{url_for('login')}}">log in</a></li>
               <li><a href="{{url_for('signup')}}">sign up</a></li>
-              <li><a href="{{url_for('layout')}}">log out</a></li>
+              {% else %}
+              
+              <li><a href="{{url_for('logout')}}">log out</a></li>
               <li><a href="{{url_for('posts')}}">posts</a></li>
+              <p> welcome, {{ session.email }}</p>
             </ul>
+            {% endif %}
           </nav>
         </div>
       </div>
