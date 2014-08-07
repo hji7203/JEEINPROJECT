@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="out_layer">
+<h2>Sign up</h2>
+<!-- <form action="{{ url_for('signup') }}"> -->
+	<dl>
+		<dt>Email:</dt>
+		<dd><input type="text" name="email" id = "email"></dd>
+		<dt>Password:</dt>
+		<dd><input type="password" name="password" id = "password"></dd>
+		<dt>Password Check:</dt>
+		<dd><input type= "text" name ="password_check"></dd>
+		<dt>Name:</dt>
+		<dd><input type= "text" name ="userName"></dd>
+		<dt>Gender:</dt>
+		<dd><input type= "checkbox" name ="M">M<input type= checkbox name ="F">F</dd>
+		<dt>Mobile:</dt>
+		<dd><input type= "text" name ="mobile"></dd>
+		<dt>Birthday:</dt>
+		<dd><input type="date" id="birthday" value="2014-02-09"name= "birthday"></dd>
+		<script>
+		function myFunction() {
+			var x = document.getElementById("birthday").value;
+			document.getElementById("demo").innerHTML = x;
+		}
+		</script>
+		<dd><input type="submit" value="Sign up"></dd>
+		<dd><input type="reset" value="Reset"></dd>
+	</dl>
+</div>
+<!-- </form> -->
+{% endblock %}

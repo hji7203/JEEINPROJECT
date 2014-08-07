@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="out_layer">
+<h2>Posts</h2>
+<a href = "{{url_for('write')}}"><input type = "button" name = "write" value = "new"></a>
+<dl>
+	<dt>JEEIN's wall</dt>
+	<dd>hello, my name is jeein, i am trying to make SNS... 
+		<a href="{{url_for('read')}}">read more...</a></dd>
+</dl>
+<dl>
+	<dt>comments</dt>
+	<dd>JEEIN : wow!</dd>
+	<dd><input type = "text" name = "comments">
+		<input type = "submit" name = "upload_comments"></dd>
+</dl>
+</div>
+{% endblock %}
