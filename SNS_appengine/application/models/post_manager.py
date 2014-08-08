@@ -13,3 +13,6 @@ def add_post(data, temp, post_user_id, post_wall_id):
 	db.session.add(post)
 	db.session.commit()
 	return post
+
+def get_post(content):
+	pass

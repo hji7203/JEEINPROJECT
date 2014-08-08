@@ -39,9 +39,10 @@ def signup():
 def posts(wall_id):
     if wall_id == 0 :
         wall_id = session['user_id']
-    
     session['wall_id'] = wall_id
-    return render_template('posts.html')
+    wall_user = user_manager.get_user_by(wall_id)
+    wall_name = wall_user.username
+    return render_template('posts.html', wall_name = wall_name)
 
 @app.route('/logout')
 def logout():

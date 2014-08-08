@@ -24,3 +24,7 @@ def get_user(email):
 def login_check(email, password):
 	return User.query.filter(User.email == email,
 		User.password == db.func.md5(password)).count() != 0
+
+def get_user_by(_id):
+	user = User.query.get(_id)
+	return user
