@@ -1,6 +1,6 @@
 #-*- coding:utf-8 -*-
 from application import app
-from application.models import user_manager, post_manager
+from application.models import user_manager, post_manager, comment_manager
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from application.models.schema import *
 
@@ -42,7 +42,9 @@ def posts(wall_id):
     session['wall_id'] = wall_id
     wall_user = user_manager.get_user_by(wall_id)
     wall_name = wall_user.username
-    return render_template('posts.html', wall_name = wall_name)
+    wall_posts = post_manager.get_posts(session['wall_id'])
+
+    return render_template('posts.html', wall_name = wall_name, wall_posts = wall_posts)
 
 @app.route('/logout')
 def logout():
@@ -57,15 +59,33 @@ def write():
         if 'secret' in request.form:
             secret_temp = 1
         else :
-            secret_temp = 0  
+            secret_temp = 0 
         post_manager.add_post(request.form, secret_temp, session['user_id'], session['wall_id'])
-        return redirect(url_for('posts'))
+        return redirect(url_for('posts', wall_id = session['wall_id']))
     else:
         return render_template('write.html')
 
-@app.route('/read')
-def read():
-    return render_template('read.html')
+@app.route('/comments/<int:post_id>', methods = ['GET','POST'])
+def comments(post_id):
+    if request.method =='POST':
+        comment_manager.add_comment(request.form, post_id, session['user_id'])
+        return redirect(url_for('posts', wall_id = session['wall_id']))
+
+
+@app.route('/read/<int:post_id>')
+def read(post_id):
+    post = post_manager.get_post_by(post_id)
+    return render_template('read.html', wall_id =session['wall_id'], post = post)
+
+@app.route('/delete/<int:post_id>')
+def delete(post_id):
+    post = post_manager.get_post_by(post_id)
+    if session['user_id'] == post.user_id:
+        post_manager.del_post(post_id)
+    else:
+        pass
+
+    return redirect(url_for('posts', wall_id =session['wall_id']))
 
 
 @app.errorhandler(404)

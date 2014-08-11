@@ -4,16 +4,20 @@
 <div class="out_layer">
 <h2>Posts</h2>
 <a href = "{{url_for('write')}}"><input type = "button" name = "write" value = "write"></a>
+
+{% for post in wall_posts %}
 <dl>
-	<dt>{{ wall_name }}'s wall</dt>
-	<dd>hello, my name is jeein, i am trying to make SNS... 
-		<a href="{{url_for('read')}}">read more...</a></dd>
-</dl>
-<dl>
-	<dt>comments</dt>
-	<dd>JEEIN : wow!</dd>
-	<dd><input type = "text" name = "comments">
-		<input type = "submit" name = "upload_comments"></dd>
+	<a href="{{url_for('read', post_id = post.id)}}"><dt>{{ post.user.username }} : {{ post.body }}</a>
+	<a href = "{{url_for('delete', post_id = post.id)}}"><input type = "button" name = "write" value = "delete"></a></dt>
+	{% for comment in post.comments %}
+	<dd id = "comment_dd">{{comment.user.username}} : {{ comment.body }}</dd>
+	{% endfor %}
+	<dd>
+	<form action="{{ url_for('comments', post_id = post.id) }}" method="post">
+		<input type = "text" name = "comments">
+		<input type = "submit" value = "submit"></a></dd>
+	</form>
 </dl>
 </div>
+{% endfor %}
 {% endblock %}

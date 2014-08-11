@@ -622,3 +622,8 @@
 	padding : 20px;
 	margin: 20px;
 }
+
+#comment_dd{
+	padding-left: 10px;
+	font-size: 0.8em;
+}

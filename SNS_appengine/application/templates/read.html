@@ -2,16 +2,17 @@
 {% block body %}
 <div class="out_layer">
 <dl>
-	<dt>JEEIN's wall</dt>
-	<dd>hello, my name is jeein, i am trying to make SNS.<br>
-		JIHOGod really helped me.<br>
-		Thank you!!</dd>
+	<dt>{{ post.user.username }}</dt>
+	<dd>{{ post.body }}</dd>
 </dl>
 <dl>
-	<dt>comments</dt>
-	<dd>JEEIN : wow!</dd>
+	<dt>comment</dt>
+	{% for comment in post.comments %}
+	<dd id = "comment_dd">{{ comment.user.username }} : {{ comment.body }}</dd>
+	{% endfor %}
 	<dd><input type = "text" name = "comments">
 		<input type = "submit" name = "upload_comments"></dd>
+
 </dl>
 </div>
 {% endblock %}

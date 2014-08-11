@@ -14,5 +14,19 @@ def add_post(data, temp, post_user_id, post_wall_id):
 	db.session.commit()
 	return post
 
-def get_post(content):
-	pass
+
+def get_posts(_id):
+	posts = Post.query.filter(Post.wall_id == _id).all()
+	return posts
+
+def get_post_by(_id):
+	post = Post.query.get(_id)
+	return post
+
+def del_post(_id):
+	post = Post.query.get(_id)
+
+	db.session.delete(post)
+	db.session.commit()
+
+	return post

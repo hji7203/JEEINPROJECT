@@ -25,7 +25,7 @@ class Post(db.Model):
 	wall_id		= db.Column(db.Integer, db.ForeignKey('user.id'))
 	wall 		= db.relationship('User', 
 		foreign_keys = [wall_id],
-		backref 	= db.backref('wall_posts', 
+		backref = db.backref('wall_posts', 
 						cascade = 'all, delete-orphan',
 						lazy	= 'dynamic'))
 
