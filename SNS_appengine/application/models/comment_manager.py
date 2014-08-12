@@ -12,7 +12,14 @@ def add_comment(data, post_id, comment_user_id):
 	db.session.commit()
 	return comment
 
-def get_comments(_id):
-	comments = Comment.query.filter(Comment.post_id == _id).all()
-	return comments
+def get_comment_by(_id):
+	comment = Comment.query.get(_id)
+	return comment
 
+def del_comment(_id):
+	comment = Comment.query.get(_id)
+
+	db.session.delete(comment)
+	db.session.commit()
+
+	return comment

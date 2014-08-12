@@ -25,8 +25,12 @@ def get_post_by(_id):
 
 def del_post(_id):
 	post = Post.query.get(_id)
-
 	db.session.delete(post)
 	db.session.commit()
-
 	return post
+
+def edit_post(_id, data):
+	post = Post.query.get(_id)
+	post.body = data['content']
+	db.session.commit()
+	
