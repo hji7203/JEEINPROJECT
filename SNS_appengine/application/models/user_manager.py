@@ -28,3 +28,15 @@ def login_check(email, password):
 def get_user_by(_id):
 	user = User.query.get(_id)
 	return user
+
+def add_profile_image(user_id, filename):
+	user = get_user_by(user_id)
+	user.profile_image = filename
+
+	db.session.commit()
+
+def follow_user(follow):
+	users = User.query.filter(User.username.like("%"+follow+"%")).all()
+	return users
+
+

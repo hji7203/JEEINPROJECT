@@ -1,16 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
+<script src= "{{url_for('static', filename='js/ajax.js')}}" type='text/javascript'></script>
 
 <div class="out_layer">
 <h2>Posts</h2>
 <a href = "{{url_for('write')}}"><input type = "button" name = "write" value = "write"></a>
-
-{% for post in wall_posts %}
-<dl>
-	<a href="{{url_for('read', post_id = post.id)}}"><dt>{{ post.user.username }} : {{ post.body }}</a>
-	<a href = "{{url_for('delete', post_id = post.id)}}"><input type = "button" name = "write" value = "delete"></a></dt>
-
-</dl>
-{% endfor %}
+<input type = "hidden", value = "{{ session.wall_id }}" id = "wall_id">
+<div id="here">
+</div>
 </div>
 {% endblock %}

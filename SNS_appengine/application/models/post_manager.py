@@ -15,8 +15,9 @@ def add_post(data, temp, post_user_id, post_wall_id):
 	return post
 
 
-def get_posts(_id):
-	posts = Post.query.filter(Post.wall_id == _id).all()
+def get_posts(_id, i):
+	i = int(i)
+	posts = Post.query.filter(Post.wall_id == _id).order_by(db.desc(Post.edited_time)).slice(i,i+5).all()
 	return posts
 
 def get_post_by(_id):

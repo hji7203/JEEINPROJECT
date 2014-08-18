@@ -3,6 +3,7 @@ from application import app
 from application.models import user_manager, post_manager, comment_manager
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from application.models.schema import *
+import json
 
 @app.route('/')
 def layout():
@@ -42,9 +43,17 @@ def posts(wall_id):
     session['wall_id'] = wall_id
     wall_user = user_manager.get_user_by(wall_id)
     wall_name = wall_user.username
-    wall_posts = post_manager.get_posts(session['wall_id'])
 
-    return render_template('posts.html', wall_name = wall_name, wall_posts = wall_posts)
+    return render_template('posts.html', wall_name = wall_name)
+
+
+@app.route('/load', methods = ['GET','POST'])
+def load():
+    if request.method == 'POST':
+        num = request.form['num']
+        posts = post_manager.get_posts(session['wall_id'], num)
+        return render_template('wall_ajax.html', posts = posts)
+
 
 @app.route('/logout')
 def logout():
