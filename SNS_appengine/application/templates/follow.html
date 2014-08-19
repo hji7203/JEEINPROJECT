@@ -1,10 +1,26 @@
 {% extends "layout.html" %}
 {% block body %}
 <script src= "{{url_for('static', filename='js/ajax_follow.js')}}" type='text/javascript'></script>
-<div>
+<div class= "out_layer">
 	<input type = "text" name = "follow" id = "follow">
 	<div id="follow_here">
 	</div>
 	</div>
+	
+	<div class = "out_layer">
+	<dl><h1><span style = "color:navy;">follower</span></h1>
+		{% for follower in my_followers %}
+	<dt >{{ follower.follower.username }}</dt>
+		{% endfor %}
+	</dl>
+	
+	
+	
+	<dl><h1><span style = "color:navy;">followee</span></h1>
+		{% for followee in my_followees %}
+	<dt > {{ followee.followee.username }} </dt>
+		{% endfor %}
+</dl>
+</div>
 
 {% endblock %}

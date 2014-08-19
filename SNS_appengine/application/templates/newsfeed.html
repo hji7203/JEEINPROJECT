@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="out_layer">
+<h2>Newsfeed</h2>
+<input type = "hidden", value = "{{ session.wall_id }}" id = "wall_id">
+<div>
+	{% for user_id_post in user_id_posts %}
+	<dl>
+		<dt>{{ user_id_post.user.username }} : {{ user_id_post.body }}</dt>
+	</dl>
+	{% endfor %}
+
+	{% for wall_id_post in wall_id_posts %}
+	<dl>
+		<dt>{{ wall_id_post.user.username }} : {{ wall_id_post.body }}</dt>
+	</dl>
+	{% endfor %}
+</div>
+</div>
+{% endblock %}

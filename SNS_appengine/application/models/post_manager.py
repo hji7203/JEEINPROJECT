@@ -34,4 +34,13 @@ def edit_post(_id, data):
 	post = Post.query.get(_id)
 	post.body = data['content']
 	db.session.commit()
+
+def get_user_id_posts(list):
+	posts = Post.query.filter(Post.user_id.in_(list)).all()
+	return posts
+
+def get_wall_id_posts(list):
+	posts = Post.query.filter(Post.wall_id.in_(list)).all()
+	return posts
+
 	

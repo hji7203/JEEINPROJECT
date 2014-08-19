@@ -1,6 +1,5 @@
 var last = false;
 var running = false;
-var lenBody = postBody.length;
 var num = 0;
 
 $(document).ready(function(){

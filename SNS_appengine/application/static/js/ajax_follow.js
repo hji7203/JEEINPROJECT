@@ -1,23 +1,25 @@
 
 var xhr;
 $(document).ready(function(){
+	
 
 	$("#follow").keyup(function(){
+		if ($("#follow").val() == ''){
+			$('#follow_here').empty();
+			if (xhr){
+				xhr.abort();
+			}
+		}
 		if( $("#follow").val() != ''){
 			
-			load_Follow($("#follow").val());			
-			}
-		else{
-			$('#follow_here').empty();
+			load_follow($("#follow").val());			
 		}
 	});
 
-	
-	
 
 });
 
-function load_Follow(follow) {
+function load_follow(follow) {
 	if (xhr){
 		xhr.abort();
 	}
@@ -28,7 +30,7 @@ function load_Follow(follow) {
 
 		success:function(response){
 			$('#follow_here').html(response);
-	
+
 		},
 		error: function(){
 			console.log('error');

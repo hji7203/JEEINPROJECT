@@ -38,6 +38,8 @@
               
               <li><a href="{{url_for('logout')}}">log out</a></li>
               <li><a href="{{url_for('posts')}}">posts</a></li>
+              <li><a href="{{url_for('follow')}}">follow</a></li>
+              <li><a href="{{url_for('newsfeed')}}">newsfeed</a></li>
               <p> welcome, {{ session.email }}</p>
             </ul>
             {% endif %}
