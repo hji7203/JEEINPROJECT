@@ -1,8 +1,6 @@
 
 var xhr;
 $(document).ready(function(){
-	
-
 	$("#follow").keyup(function(){
 		if ($("#follow").val() == ''){
 			$('#follow_here').empty();
@@ -10,13 +8,11 @@ $(document).ready(function(){
 				xhr.abort();
 			}
 		}
-		if( $("#follow").val() != ''){
-			
+		else{	
+			// name edit
 			load_follow($("#follow").val());			
 		}
 	});
-
-
 });
 
 function load_follow(follow) {
@@ -30,7 +26,6 @@ function load_follow(follow) {
 
 		success:function(response){
 			$('#follow_here').html(response);
-
 		},
 		error: function(){
 			console.log('error');

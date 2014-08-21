@@ -1,6 +1,7 @@
 from application import db
 from schema import *
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
+from sqlalchemy import or_
 
 def add_post(data, temp, post_user_id, post_wall_id):
 	post = Post(
@@ -35,12 +36,11 @@ def edit_post(_id, data):
 	post.body = data['content']
 	db.session.commit()
 
-def get_user_id_posts(list):
-	posts = Post.query.filter(Post.user_id.in_(list)).all()
+def get_news_posts(list, i):
+	i = int(i)
+	posts = Post.query.filter(or_(Post.user_id.in_(list), 
+								Post.wall_id.in_(list))).order_by(db.desc(Post.edited_time)).slice(i,i+5).all()
 	return posts
 
-def get_wall_id_posts(list):
-	posts = Post.query.filter(Post.wall_id.in_(list)).all()
-	return posts
 
 	

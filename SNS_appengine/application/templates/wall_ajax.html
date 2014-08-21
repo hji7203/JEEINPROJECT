@@ -1,11 +1,17 @@
 {% for post in posts %}
 
 <dl>
-	<dt data-post-body = "{{ post.body }}"><a href="{{url_for('read', post_id = post.id)}}">{{ post.user.username }} : {{ post.body }}</a>         <span style = "font-size:10pt">{{ post.edited_time }}</span>
-		{% if session.user_id ==post.user_id %}
-	<a href = "{{url_for('delete', post_id = post.id)}}"><input type = "button" name = "write" value = "delete"></a>
-	{% endif %}
-</dt>
-
+	<dt data-post-body = "{{ post.body }}">
+		<a href="{{url_for('read', post_id = post.id)}}">
+			{{ post.user.username }} : {{ post.body }}
+		</a>         
+		<span style = "font-size:10pt">
+			{{ post.edited_time }}
+		</span>
+		{% if session.user_id == post.user_id %}
+			<a href = "{{url_for('delete', post_id = post.id)}}">
+			<input type = "button" name = "write" value = "delete"></a>
+		{% endif %}
+	</dt>
 </dl>
 {% endfor %}

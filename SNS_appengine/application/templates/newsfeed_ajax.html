@@ -1,0 +1,5 @@
+	{% for news_post in news_posts %}
+	<dl>{{ news_post.wall.username }}'s wall
+		<dt>{{ news_post.user.username }} : {{ news_post.body }}</dt>
+	</dl>
+	{% endfor %}

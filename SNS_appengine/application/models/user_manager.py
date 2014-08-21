@@ -19,10 +19,12 @@ def add_user(data):
 
 def get_user(email):
 	user = User.query.filter(User.email == email).all()
+	# check user count
 	return user
 
 def login_check(email, password):
-	return User.query.filter(User.email == email,
+	return User.query.filter(
+		User.email == email,
 		User.password == db.func.md5(password)).count() != 0
 
 def get_user_by(_id):

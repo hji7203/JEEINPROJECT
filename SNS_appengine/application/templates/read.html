@@ -5,20 +5,25 @@
 	<dt>{{ post.user.username }}</dt>
 	<dd>{{ post.body }}</dd>
 	{% if session.user_id == post.user_id %}
-	<a href = "{{ url_for('post_edit', post_id = post.id )}}"><input type = "submit" value= "edit"></a>
+		<a href = "{{ url_for('edit', post_id = post.id )}}">
+			<input type = "submit" value= "edit">
+		</a>
 	{% endif %}
 </dl>
 <dl>
 	<dt>comment</dt>
 	{% for comment in post.comments %}
-	<dd id = "comment_dd">{{ comment.user.username }} : {{ comment.body }}
-	{% if session.user_id ==  post.user_id %}
-	<a href = "{{ url_for('delete_comment', comment_id = comment.id, post_id = post.id) }}"><input type = "submit" value= "X"></a></dd>
-	{% endif %}
+		<dd id = "comment_dd">{{ comment.user.username }} : {{ comment.body }}
+		{% if session.user_id ==  post.user_id %}
+			<a href = "{{ url_for('delete_comment', comment_id = comment.id, post_id = post.id) }}">
+				<input type = "submit" value= "X">
+			</a>
+		{% endif %}
+		</dd>
 	{% endfor %}
 	<form action="{{ url_for('comments', post_id = post.id) }}" method="post">
 		<input type = "text" name = "comments">
-		<input type = "submit" value = "submit"></a></dd>
+		<input type = "submit" value = "submit">
 	</form>
 
 </dl>

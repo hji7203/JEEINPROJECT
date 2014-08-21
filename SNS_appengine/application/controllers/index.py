@@ -5,9 +5,14 @@ from flask import Flask, request, session, g, redirect, url_for, abort, render_t
 from application.models.schema import *
 import json
 
+# default setting
+
 @app.route('/')
 def layout():
-	return render_template('layout.html')
+    if 'user_id' in session:
+    	return render_template('layout.html')
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/login', methods = ['GET','POST'])
 def login():
@@ -26,6 +31,7 @@ def login():
             error = "There is no information."
     else :
         pass
+        # don't need
     return render_template('login.html', error = error)
 
 @app.route('/signup', methods = ['GET','POST'])
@@ -39,12 +45,13 @@ def signup():
 @app.route('/post/<int:wall_id>')
 def posts(wall_id):
     if wall_id == 0 :
-        wall_id = session['user_id']
+        if 'user_id' in session:
+            wall_id = session['user_id']
+        else:
+            return redirect(url_for('login'))
     session['wall_id'] = wall_id
-    wall_user = user_manager.get_user_by(wall_id)
-    wall_name = wall_user.username
 
-    return render_template('posts.html', wall_name = wall_name)
+    return render_template('posts.html')
 
 
 @app.route('/load', methods = ['GET','POST'])
@@ -65,16 +72,17 @@ def logout():
 @app.route('/write', methods = ['GET','POST'])
 def write():
     if request.method == 'POST': 
-        if 'secret' in request.form:
-            secret_temp = 1
-        else :
-            secret_temp = 0 
-        post_manager.add_post(request.form, secret_temp, session['user_id'], session['wall_id'])
+        # if 'secret' in request.form:
+        #     secret_temp = 1
+        # else :
+        #     secret_temp = 0 
+        post_manager.add_post(request.form, 'secret' in request.form, session['user_id'], session['wall_id'])
         return redirect(url_for('posts', wall_id = session['wall_id']))
     else:
 
         return render_template('write.html')
 
+# post new file
 @app.route('/comments/<int:post_id>', methods = ['GET','POST'])
 def comments(post_id):
     if request.method =='POST':
@@ -86,18 +94,21 @@ def comments(post_id):
 @app.route('/read/<int:post_id>', methods = ['GET','POST'])
 def read(post_id):
     post = post_manager.get_post_by(post_id)
-    return render_template('read.html', wall_id =session['wall_id'], post = post)
+    return render_template('read.html', post = post)
 
-@app.route('/post_edit/<int:post_id>')
-def post_edit(post_id):
-    post = post_manager.get_post_by(post_id)
-    return render_template('edit.html', post = post)
+# @app.route('/post_edit/<int:post_id>')
+# def post_edit(post_id):
+#     post = post_manager.get_post_by(post_id)
+#     return render_template('edit.html', post = post)
 
 @app.route('/edit/<int:post_id>', methods = ['GET','POST'])
 def edit(post_id):
     if request.method =='POST':
         post_manager.edit_post(post_id, request.form)
-    return redirect(url_for('read' ,post_id = post_id))
+        return redirect(url_for('read' ,post_id = post_id))
+    else:
+        post = post_manager.get_post_by(post_id)
+        return render_template('edit.html', post = post)        
 
 
 @app.route('/delete/<int:post_id>')
@@ -107,6 +118,7 @@ def delete(post_id):
         post_manager.del_post(post_id)
     else:
         pass
+        # error message, error.html / alert
 
     return redirect(url_for('posts', wall_id =session['wall_id']))
 

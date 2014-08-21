@@ -17,12 +17,12 @@ function loadData() {
 	if(!running) {
 		running = true;
 		$.ajax({
-			url: '/load',
+			url: '/load_newsfeed',
 			type: 'POST',
 			data:{"num":num},
 
 			success:function(response){
-				$('#load_posts').append(response);
+				$('#newsfeed_here').append(response);
 				num = num+5;
 				running = false;
 				if (response.trim() ==''){
